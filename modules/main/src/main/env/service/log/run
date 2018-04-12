@@ -1,0 +1,10 @@
+#!/bin/sh
+
+LOG=${log.dir}
+DAEMON=${application.daemon.enable}
+
+if [ "$DAEMON" = "true" ]; then
+  run_as="chpst -u ${application.user}:${application.group}"
+fi
+
+exec $run_as svlogd -tt \$LOG
