@@ -20,4 +20,9 @@ public interface Flight {
      */
     void setState(State state);
 
+    /**
+     * Returns time flight was registered
+     */
+    Long getTimeRegistered();
+
 }

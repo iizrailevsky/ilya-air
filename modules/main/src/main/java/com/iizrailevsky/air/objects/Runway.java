@@ -1,5 +1,9 @@
 package com.iizrailevsky.air.objects;
 
+import com.iizrailevsky.air.services.TimerService;
+
+import java.sql.Time;
+
 /**
  * Represents airport runway
  */
@@ -27,5 +31,11 @@ public interface Runway {
      * waiting for landing/takeoff, and successfully landing/takeoff
      */
     void printStatus();
+
+    /**
+     * Registers the timer service with the runway
+     * @param timerService
+     */
+    void registerTimer(TimerService timerService);
 
 }

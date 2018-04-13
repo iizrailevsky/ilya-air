@@ -19,6 +19,7 @@
         <application.daemon.enable>false</application.daemon.enable>
         <application.daemon.dependencies>runit</application.daemon.dependencies>
         <salutations>${env.USER}</salutations>
+        <timeout>10</timeout>
     </properties>
 
     <dependencies>

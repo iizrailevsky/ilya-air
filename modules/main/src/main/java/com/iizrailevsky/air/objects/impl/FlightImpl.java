@@ -9,6 +9,17 @@ public class FlightImpl implements Flight{
     private int flightNumber;
     // flight state
     private State state;
+    // time of flight registration
+    private long timeRegistered;
+
+    /**
+     * Constructor
+     * @param flightNumber
+     */
+    public FlightImpl(int flightNumber) {
+        this.flightNumber = flightNumber;
+        this.timeRegistered = System.currentTimeMillis();
+    }
 
     /**
      * Constructor
@@ -18,6 +29,7 @@ public class FlightImpl implements Flight{
     public FlightImpl(int flightNumber, State state) {
         this.flightNumber = flightNumber;
         this.state = state;
+        this.timeRegistered = System.currentTimeMillis();
     }
 
     /**
@@ -42,6 +54,11 @@ public class FlightImpl implements Flight{
     @Override
     public void setState(State state) {
         this.state = state;
+    }
+
+    @Override
+    public Long getTimeRegistered() {
+        return timeRegistered;
     }
 
     @Override
