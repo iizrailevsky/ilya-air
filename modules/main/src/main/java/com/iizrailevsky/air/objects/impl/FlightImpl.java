@@ -22,17 +22,6 @@ public class FlightImpl implements Flight{
     }
 
     /**
-     * Constructor
-     * @param flightNumber
-     * @param state
-     */
-    public FlightImpl(int flightNumber, State state) {
-        this.flightNumber = flightNumber;
-        this.state = state;
-        this.timeRegistered = System.currentTimeMillis();
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -228,4 +228,6 @@ public class RunwayImpl implements Runway {
     public void registerTimer(TimerService timerService) {
         this.timerService = timerService;
     }
+
+    PriorityBlockingQueue<Flight> getQ() { return this.q; }
 }
