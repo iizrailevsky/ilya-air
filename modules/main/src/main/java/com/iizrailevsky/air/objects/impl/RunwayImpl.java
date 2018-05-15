@@ -7,10 +7,8 @@ import com.iizrailevsky.air.services.TimerService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 public class RunwayImpl implements Runway {
 
@@ -126,102 +124,67 @@ public class RunwayImpl implements Runway {
         sb.append("Timeout: ").append(this.timerService.getTimeoutInSec()).append("\n");
         sb.append("Time: ").append(timerService.elapsedSeconds()).append(" sec").append("\n");
 
-        sb.append("Inflight for takeoff: ");
-        int inForTakeoffCount = 0;
-        for (Flight f1: flights) {
-            if (f1.getState().equals(State.INFLIGHT_TAKEOFF)) {
-                if (inForTakeoffCount > 0) {
-                    sb.append(" ");
-                }
-                sb.append(f1);
-                inForTakeoffCount++;
-            }
-        }
-        if (inForTakeoffCount == 0) {
-            sb.append("none");
-        }
-        sb.append("\n");
+        appendToStatusFromQ(flights, sb, "Inflight for takeoff: ", State.INFLIGHT_TAKEOFF);
 
-        sb.append("Waiting for takeoff: ");
-        int waitForTakeoffCount = 0;
-        for (Flight f1: flights) {
-            if (f1.getState().equals(State.WAITING_TAKEOFF)) {
-                if (waitForTakeoffCount > 0) {
-                    sb.append(" ");
-                }
-                sb.append(f1);
-                waitForTakeoffCount++;
-            }
-        }
-        if (waitForTakeoffCount == 0) {
-            sb.append("none");
-        }
-        sb.append("\n");
+        appendToStatusFromQ(flights, sb, "Waiting for takeoff: ", State.WAITING_TAKEOFF);
 
-        sb.append("Inflight for landing: ");
-        int inForLandingCount = 0;
-        for (Flight f1: flights) {
-            if (f1.getState().equals(State.INFLIGHT_LANDING)) {
-                if (inForLandingCount > 0) {
-                    sb.append(" ");
-                }
-                sb.append(f1);
-                inForLandingCount++;
-            }
-        }
-        if (inForLandingCount == 0) {
-            sb.append("none");
-        }
-        sb.append("\n");
+        appendToStatusFromQ(flights, sb, "Inflight for landing: ", State.INFLIGHT_LANDING);
 
-        sb.append("Waiting for landing: ");
-        int waitForLandCount = 0;
-        for (Flight f1: flights) {
-            if (f1.getState().equals(State.WAITING_LANDING)) {
-                if (waitForLandCount > 0) {
-                    sb.append(" ");
-                }
-                sb.append(f1);
-                waitForLandCount++;
-            }
-        }
-        if (waitForLandCount == 0) {
-            sb.append("none");
-        }
-        sb.append("\n");
+        appendToStatusFromQ(flights, sb, "Waiting for landing: ", State.WAITING_LANDING);
 
-        sb.append("Successful takeoffs: ");
-        int successTakeoffsCount = 0;
-        for (Flight f1: completedList) {
-            if (f1.getState().equals(State.SUCCESSFUL_TAKEOFF)) {
-                if (successTakeoffsCount > 0) {
-                    sb.append(" ");
-                }
-                sb.append(f1);
-                successTakeoffsCount++;
-            }
-        }
-        if (successTakeoffsCount == 0) {
-            sb.append("none");
-        }
-        sb.append("\n");
+        appendToStatusFromCompleted(sb, "Successful takeoffs: ", State.SUCCESSFUL_TAKEOFF);
 
-        sb.append("Successful landings: ");
-        int successLandCount = 0;
-        for (Flight f1: completedList) {
-            if (f1.getState().equals(State.SUCCESSFUL_LANDING)) {
-                if (successLandCount > 0) {
-                    sb.append(" ");
-                }
-                sb.append(f1);
-                successLandCount++;
-            }
-        }
-        if (successLandCount == 0) {
-            sb.append("none");
-        }
-        sb.append("\n");
+        appendToStatusFromCompleted(sb, "Successful landings: ", State.SUCCESSFUL_LANDING);
         System.out.print(sb);
+    }
+
+    /**
+     * Appends status from q
+     * @param flights
+     * @param sb
+     * @param s
+     * @param state
+     */
+    private void appendToStatusFromQ(Flight[] flights, StringBuilder sb, String s, State state) {
+        sb.append(s);
+        int count = 0;
+        for (Flight f1 : flights) {
+            if (f1.getState().equals(state)) {
+                if (count > 0) {
+                    sb.append(", ");
+                }
+                sb.append(f1);
+                count++;
+            }
+        }
+        if (count == 0) {
+            sb.append("none");
+        }
+        sb.append("\n");
+    }
+
+    /**
+     * Appends status from completed list
+     * @param sb
+     * @param s
+     * @param state
+     */
+    private void appendToStatusFromCompleted(StringBuilder sb, String s, State state) {
+        sb.append(s);
+        int count = 0;
+        for (Flight f1 : completedList) {
+            if (f1.getState().equals(state)) {
+                if (count > 0) {
+                    sb.append(" ");
+                }
+                sb.append(f1);
+                count++;
+            }
+        }
+        if (count == 0) {
+            sb.append("none");
+        }
+        sb.append("\n");
     }
 
     @Override
